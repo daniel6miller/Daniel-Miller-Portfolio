@@ -1,0 +1,1196 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital@0;1&family=Merriweather:ital,wght@0,300;0,400;1,300;1,400&family=Playfair+Display:wght@400;500;700;800;900&display=swap');
+
+/* The flex property sets the flexible length on flexible items */
+/* The CSS flex-wrap property is used to specify whether flex items are forced into a single line or wrapped onto multiple lines */
+
+/* Variables */
+:root{
+    --main-color: #ebeff09f;
+    --blue: #598bf8 ;
+    --blue-dark: #030303;
+    --orange: #f5832d;
+    --green-yellow: #Abe6ce;
+    --pink-light: #000000;
+    --cyan-light: #3b3b3b;
+    --change-color: #865ef3;
+    --toggle-ball: #465362;
+    --white: rgb(7, 7, 7);
+    --white-alpha-40: rgba(255, 255, 255, 0.4);
+    --white-alpha-25: rgba(255, 255, 255, 0.25);
+    --backdrop-filter-blur: blur(5px);
+}
+
+:root.active{
+    --main-color: #000000;
+    --blue: #605b7b ;
+    --blue-dark: #000000;
+    --orange: #f30c0c;
+    --green-yellow: #f7ac0a;
+    --pink-light: #044077;
+    --cyan-light: #0eacf5;
+    --white: rgb(218, 29, 29);
+    --white-alpha-40: rgba(0, 0, 0, 0.4);
+    --white-alpha-25: rgba(235, 224, 224, 0.7);
+    --backdrop-filter-blur: blur(5px);
+}
+
+/* Global settings */
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    outline: none;
+}
+
+::before,
+::after{
+    box-sizing: border-box;
+}
+
+/* to make the cool transparent box */
+body{
+    min-height: 100vh;
+    background-image: linear-gradient(to bottom right, var(--pink-light), var(--cyan-light));
+    background-attachment: fixed;
+    font-size: 16px;
+    font-family: 'Georgia', serif;
+    font-weight: 300;
+    color: var(--blue-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+    padding: 35px 15px; 
+}
+
+body.hide-scrolling{
+    overflow-y: hidden;
+}
+
+/* Font weight is the “value” placed on your font that will determine how bold or light your text will appear. */
+body::before{
+    content: '';
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--green-yellow);
+    z-index: -1;
+    opacity: 0.12;
+}
+
+a{
+    text-decoration: none;
+}
+
+h1,h2{
+    font-weight: 600;
+}
+
+h3,h4,h5,h6{
+    font-weight: 500;
+}
+
+img{
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+
+section{
+    background-color: var(--white-alpha-25);
+    border: 1px solid var(--white-alpha-40);
+    min-height: calc(100vh - 70px);
+    border-radius: 30px;
+    backdrop-filter: var(--backdrop-filter-blur);
+    display:none;
+}
+
+section.active{
+    display: block;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+section.fade-out{
+    animation: fadeOut 0.5s ease-in-out forwards;
+}
+
+.center{
+    text-align: center;
+}
+
+.main{
+    max-width: 1200px;
+    margin: auto;
+    transition: all 0.5s ease-in-out;
+    position: relative;
+}
+
+/* make the screen fade out */
+.main.fade-out{
+    opacity: 0;
+}
+
+.container{
+    padding: 0 40px;
+    width: 100%;
+}
+
+.row{
+    display:flex;
+    flex-wrap:wrap;
+}
+
+.align-items-center{
+    align-items: center;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.sec-padding{
+    padding: 80px 0;
+}
+
+/* make the button on the edge of the page to the right */
+.flex-end{
+    justify-content: flex-end;
+}
+
+
+/* Section Title */
+.section-title{
+    padding:0 15px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.section-title h2{
+    font-size:40px;
+    text-transform: capitalize;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar{
+    width: 5px;
+}
+
+::-webkit-scrollbar-track{
+    background-color: #616e7c;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: #f5f7fa;
+    border-radius: 3px;
+}
+
+/* html::-webkit-scrollbar-track.active{
+    background-color: #d8cbc4;
+}
+
+html::-webkit-scrollbar-thumb.active{
+    background-color: #a08679;
+    border-radius: 10px;
+} */
+
+/* Button */
+
+/* the value of the property is set to the value of the same property of the parent element. */
+/* cursor: pointer is to make something become a clickable thing */
+
+button{
+    font-family: inherit;
+    user-select: none;
+}
+
+.btn{
+    line-height: 1.5;
+    background-color: var(--white-alpha-25);
+    border: 1px solid var(--white-alpha-40);
+    padding: 10px 28px;
+    display: inline-block;
+    border-radius: 20px;
+    color: var(--main-color);
+    font-weight: 700;
+    text-transform: capitalize;
+    font-family: inherit;
+    font-size: 19px;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+    vertical-align: middle;
+    transition: color 0.3s ease;
+}
+
+.btn::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background-color: var(--main-color);
+    z-index: -1;
+    transition: width 0.3s ease;
+}
+
+/* hover is when you click the button, there will be a slide */
+.btn:hover::before{
+    width: 100%;
+}
+
+.btn:hover{
+    color: var(--white);
+}
+
+/* Animation Keyframs */
+@keyframes fadeIn{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+@keyframes zoomInOut{
+    0%,100%{
+        transform:scale(0.5);
+    }
+    50%{
+        transform: scale(1);
+    }
+}
+
+@keyframes bounceTop{
+    0%,100%{
+        transform: translateY(-40px);
+    }
+    50%{
+        transform: translateY(0px);
+    }
+}
+
+/* when we login, there will be an effect before the content pop up */
+@keyframes spin{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+
+/* Background Circles */
+.bg-circles{
+    position: fixed;
+    top: 0;
+    height: 100%;
+    max-width: 1200px;
+    width: calc(100% - 30px);
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+/* call the property for the whole thing  */
+.bg-circles div{
+    position: absolute;
+    border-radius: 50%;
+}
+
+/* the effect for the circle */
+.bg-circles .circle-1{
+    height: 60px;
+    width: 60px;
+    background-color: var(--blue);
+    left: 5%;
+    top: 10%;
+    opacity: 0.3;
+    animation: zoomInOut 5s linear infinite;
+}
+
+.bg-circles .circle-2{
+    height: 90px;
+    width: 80px;
+    background-color: var(--change-color);
+    left: 30%;
+    top: 60%;
+    opacity: 0.4;
+    animation: bounceTop 8s ease-in-out infinite;
+}
+
+.bg-circles .circle-3{
+    height: 120px;
+    width: 120px;
+    background-color: var(--white);
+    top: 40%;
+    right: -58px;
+    opacity: 0.4;
+    animation: zoomInOut 5s linear infinite;
+}
+
+.bg-circles .circle-4{
+    height: 50px;
+    width: 45px;
+    background-color: var(--orange);
+    top: 69%;
+    left: -30px;
+    opacity: 0.6;
+
+}
+
+/* Overlay */
+/* prevent the user from keep clicking on the screen */
+.overlay{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    z-index: 200;
+    visibility: hidden;
+}
+
+.overlay.active{
+    visibility: visible;
+}
+
+/* Page Loader */
+.page-loader{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 999;
+    background-color: var(--white-alpha-25);
+    backdrop-filter: var(--backdrop-filter-blur);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s ease;
+}
+
+.page-loader.fade-out{
+    opacity: 0;
+}
+
+/* combine all of the small box into one the bigger is outside of the small one */
+/* border-top-color: transparent !important; make the top of the shape disappear */
+.page-loader div{
+    border: 2px solid transparent;
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+    animation: spin 1s linear infinite;
+}
+
+.page-loader div:nth-child(1){
+    height: 60px;
+    width: 60px;
+    border-color: var(--main-color);
+}
+
+.page-loader div:nth-child(2){
+    height:45px;
+    width: 45px;
+    border-color: var(--blue);
+    animation-duration: 2s;
+    animation-duration: 2s;
+}
+
+.page-loader div:nth-child(3){
+    height:30px;
+    width: 30px;
+    border-color: var(--orange);
+}
+
+/* Header */
+.toggle{
+    width: 103px;
+    height: 40px;
+    background-color: var(--white-alpha-25);
+    border: 1px solid var(--white-alpha-40);
+    border: none;
+    border-radius: 30px;
+    display: flex;
+    align-items: start;
+    margin: 0 35px;
+    margin-top: 1px;
+    justify-content: space-between;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.toggle.active{
+    width: 103px;
+    height: 40px;
+    background-color: #cccccc;
+    border: 1px solid var(--white-alpha-40);
+    border: none;
+    border-radius: 30px;
+    display: flex;
+    align-items: start;
+    margin: 0 35px;
+    margin-top: 1px;
+    justify-content: space-between;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.toggle .toggle-icon{
+    color: var(--blue-dark);
+}
+
+.toggle .toggle-ball{
+    height: 40px;
+    width: 45px;
+    background-color: #202b2d;
+    position: absolute;
+    right: 150px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 1s ease all;
+}
+
+.toggle-ball.active{
+    /* #baa898  */
+    background-color: #d3dfe1 ;
+    transform: translateX(-66px);
+}
+
+.header{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    padding: 20px 0 0;
+}
+
+.header.active{
+    position: fixed;
+    top: 35px;
+    padding: 20px 15px;
+}
+
+.header.active .container{
+    max-width: 1200px;
+    margin: auto;
+}
+
+.header .nav-toggler{
+    width: 50px;
+    height: 50px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: var(--white-alpha-25);
+    border: 1px solid var(--white-alpha-40);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 15px;
+    z-index: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+
+
+.header .nav-toggler.hide{
+    opacity: 0;
+    transition: none;
+}
+/* create the middle line first */
+.header .nav-toggler span{
+    height: 2px;
+    width: 24px;
+    background-color: var(--main-color);
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.header.active .nav-toggler span{
+    background-color:transparent;
+}
+
+.header .nav-toggler span::before,
+.header .nav-toggler span::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--main-color);
+    transition: all 0.3s ease;
+}
+
+/* create the top of the 3 line */
+.header .nav-toggler span::before{
+    left: 0;
+    transform: translateY(-8px);
+}
+
+/* for the lil circle that pop up the home and contact when we click on it */
+.header.active .nav-toggler span::before{
+    transform: rotate(45deg);
+}
+
+/* create the last of the 3 line */
+.header .nav-toggler span::after{
+    right: 0;
+    transform: translateY(8px);
+}
+
+/* for the lil circle that pop up the home and contact when we click on it */
+.header.active .nav-toggler span::after{
+    transform: rotate(-45deg);
+}
+
+/* add the animation for the header to slide*/
+.header:not(.active) .nav-toggler:hover span::before,
+.header:not(.active) .nav-toggler:hover span::after{
+    width: 50%;
+}
+
+.header .nav{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    padding: 35px 15px;
+    overflow-y: auto;
+    visibility: hidden;
+}
+
+.header.active .nav{
+    visibility: visible;
+}
+
+.header .nav-inner{
+    min-height: calc(100vh - 70px);
+    max-width: 1200px;
+    margin: auto;
+    background-color: var(--white-alpha-25);
+    border: 1px solid var(--white-alpha-40);
+    backdrop-filter: var(--backdrop-filter-blur);
+    padding: 50px 0;
+    border-radius: 30px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.header.active .nav-inner{
+    opacity: 1;
+}
+
+.header .nav-inner ul li{
+    text-align: center;
+    list-style: none;
+}
+
+.header .nav-inner ul li a{
+    font-size: 40px;
+    text-transform: capitalize;
+    color: var(--blue-dark);
+    display: block;
+    font-weight: 500;
+    padding: 8px 15px;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.header .nav-inner ul li a::before{
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 50%;
+    width: 0%;
+    background-color: var(--white-alpha-25);
+    z-index: -1;
+    transition: width 0.5s ease;
+}
+
+.header .nav-inner ul li a:hover::before{
+    width: 100%;
+}
+
+.header .nav-inner ul li a:hover{
+    color: var(--main-color);
+}
+
+/* Home Section */
+
+.home-section{
+
+    padding: 120px 0;
+}
+
+.home-section.active{
+    display: flex;
+}
+
+.home-text,
+.home-img{
+    width: 50%;
+    padding: 15px;
+}
+
+/* now we gonna change the word "Hello I'm" */
+.home-text p{
+    font-size: 30px;
+}
+
+.home-text h1{
+    font-size: 50px;
+    text-transform: capitalize;
+}
+
+.home-text h2{
+    font-size: 32px;
+    text-transform: capitalize;
+    font-weight: 500;
+    margin:0 0 30px;
+}
+
+.home-text .btn{
+    
+    margin:0 15px 15px 0;
+}
+
+.home-img .img-box{
+    max-width: 360px;
+    background-color: var(--white-alpha-25);
+    border-radius: 50%;
+    border: 8px solid var(--white-alpha-25);
+    margin: auto;
+}
+
+/* we can change our image around here */
+.home-img .img-box img{
+    width: 100%;
+    border-radius: 50%;
+}
+
+/* About Section */
+.about-summary {
+    font-size: 25px;
+    width: 60%;
+    padding: 0 15px;
+    font-weight: 500;
+}
+.about-summary p {
+    text-indent:40px;
+}
+.about-text{
+    width: 40%;
+    padding: 0 15px;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.about-text h3{
+    text-transform: capitalize;
+    font-size: 30px;
+    margin: 30px 0;
+}
+
+.about-text .timeline{
+    position: relative;
+}
+
+.about-text .timeline::before{
+    content: '';
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 5px;
+    width: 1px;
+    background-color: var(--main-color);
+}
+
+.about-text .timeline-item{
+    margin-bottom: 30px;
+    position: relative;
+    padding: 10px 0 0 40px;
+}
+
+/* add the dot for each of the time period */
+.about-text .timeline-item::before{
+    content: '';
+    position: absolute;
+    height: 11px;
+    width: 11px;
+    background-color: var(--main-color);
+    left: 0;
+    top: 16px;
+    border-radius: 50%;
+}
+
+.about-text .timeline-item:last-child{
+    margin-bottom: 0;
+
+}
+
+.about-text .timeline-item .date{
+    display: block;
+    color: var(--main-color);
+    font-weight: 520;
+    margin: 0 0 10px;
+    font-size: 22px;
+}
+
+.about-text .timeline-item h4{
+    font-size: 25px;
+    text-transform: capitalize;
+    margin: 0 0 10px;
+    font-family: inherit;
+}
+
+.about-text .timeline-item h4 span{
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.about-text .btn{
+    margin:0 15px 15px 0;
+}
+
+/*------------------------------*/
+/*------------ projects Section-------------- */
+.projects-text{
+    padding: 0 15px;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.projects-text h3{
+    text-transform: capitalize;
+    font-size: 30px;
+    margin: 20px 0;
+}
+
+/* the education and experience part here  */
+.projects-text .tab-content{
+    display: none;
+}
+
+/* we need javascript for education and experience choices */
+.projects-text .tab-content.active{
+    display: block;
+}
+
+.projects-text .btn{
+    margin:0 15px 15px 0;
+}
+
+.project-tabs{
+    width: 100%;
+    text-align: center;
+    padding-bottom: 30px;
+    align-items: center;
+}
+
+.project-tabs .tab-item{
+    padding: 2px 0;
+    background-color: transparent;
+    border: none;
+    text-transform: capitalize;
+    display: inline-block;
+    color: var(--main-color);
+    font-size: 24px;
+    font-style: bold;
+    cursor: pointer;
+    font-weight: 500;
+    margin: 0 35px 0 0;
+    position: relative;
+    opacity: 0.5;
+    transition: all 0.5s ease;
+    font-weight: bold;
+}
+
+.project-tabs .tab-item:last-child{
+    margin: 0;
+}
+
+.project-tabs .tab-item::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 1px;
+    background-color: var(--blue-dark);
+    transition: width 0.3s ease;
+}
+
+.project-tabs .tab-item:hover::before{
+    width: 100%;
+}
+
+.project-tabs .tab-item.active::before{
+    width: 100%;
+    background-color: var(--main-color);
+}
+
+.project-tabs .tab-item.active{
+    color: var(--main-color);
+    opacity: 1;
+    cursor: auto;
+}
+
+
+.project-item{
+    width: calc((100% / 3 ) - 30px);
+    margin: 0 15px 30px;
+    display: none;
+}
+
+.project-item.active{
+    display: block;
+}
+
+/* to create the background transparent box for each project */
+.projects-section{
+    padding-bottom: 50px;
+}
+
+.project-item-thumbnail{
+    text-align: center;
+}
+
+.project-item-thumbnail{
+    padding: 10px;
+    background-color: var(--white-alpha-25);
+    border:1px solid var(--white-alpha-40);
+    border-radius: 10px;
+}
+
+.project-item-thumbnail img{
+    height: 100%;
+    border-radius: 10px;
+}
+
+.project-item-details img{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 200px;
+}
+
+.project-item-images{
+    justify-content: center;
+    text-align: center;
+}
+
+.project-item-images img{
+    width: 40%;
+    margin: 0 0 20px 20px;
+}
+
+.project-item h3{
+    font-size: 30px;
+    text-transform: transparent;
+    margin: 10px 0;
+}
+
+.project-item-content{
+    display:none;
+}
+
+.project-item-details{
+    display: none;
+}
+
+.project-item-game{
+    display: none;
+    visibility: none;
+}
+
+#cow-game{
+    width: 440px;
+    height: 400px;
+    border: 0px;
+}
+
+#fortnite-app{
+    width: 320px;
+    height: 480px;
+    border: 0px; 
+}
+
+iframe {
+    padding: 0;
+    margin: 0 auto;
+    background-color: #777;
+    display: block;
+}
+
+/* Project popup */
+/* The z-index CSS property sets the z-order of a positioned element and its descendants or flex items */
+.project-popup{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 200;
+
+    visibility: hidden;
+}
+
+.project-popup.open{
+    visibility: visible;
+    overflow-y: auto;
+}
+
+.pp-inner{
+    min-height: 100vh;
+    padding: 40px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pp-content{
+    background-color: var(--white-alpha-25);
+    padding: 30px;
+    border-radius: 30px;
+    max-width: 900px;
+    width: 100%;
+    border:1px solid var(--white-alpha-40);
+    backdrop-filter: var(--backdrop-filter-blur);
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+/* when open the project it will slowly open */
+.project-popup.open .pp-content{
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.5s ease;
+}
+
+.pp-header{
+    position: relative;
+}
+
+/* make the close button */
+.pp-header .btn{
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: -40px;
+    top: -40px;
+}
+
+.pp-thumbnail img{
+    border-radius: 10px;
+}
+
+.pp-header h3{
+    font-size: 26px;
+    text-transform: capitalize;
+    margin:20px 0 15px;
+}
+
+.pp-body .description{
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+
+/* each of the variable will be 20px await horizontally */
+
+/* over here we will highlight the topic */
+.pp-body .general-info li{
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 20px;
+    text-transform: capitalize;
+    text-align: center;
+    list-style: none;
+}
+
+/* we will make the description not as bold like the topics'name */
+.pp-body .general-info li span{
+    font-weight: 300;
+}
+
+.pp-body .general-info li a{
+    text-transform: uppercase;
+    text-decoration: underline;
+}
+
+/*------------------------------------------Responsive---------------------------------- */
+
+/* when the screen is small, the width of the content still at 100% and the home-text will be moved into the middle */
+@media(max-width:991px){
+    .container{
+        padding: 0;
+    }
+    .home-text,
+    .home-img{
+        width: 100%;
+    }
+    .home-text{
+        text-align: center;
+    }
+    /* The order CSS property sets the order to lay out an item in a flex or grid container. */
+    .home-img{
+        order: -1;
+    }
+    .home-img .img-box{
+        max-width: 300px;
+    }
+    .home-text .btn{
+        margin: 0 7px 15px;
+    }
+    .project-item{
+        width: calc(50% - 30px);
+    }
+    .toggle-ball{
+        margin: 0;
+        margin-right: -36px;
+    }
+}
+
+/* move the conatct form and info here to make it look horizontally straight */
+@media(max-width:800px){
+    #cow-game{
+        height: 800px;
+    }
+}
+@media(max-width:767px){
+    .pp-inner{
+        padding: 0px 0px;
+    }
+    .pp-content{
+        padding: 0px;
+    }
+    .about-img,
+    .about-text{
+        width: 100%;
+    }
+    .about-text{
+        margin-top: 32px;
+    }
+    .project-item{
+        width: calc(100% - 30px);
+        margin: 0 0px 0px;
+    }
+    /* move the project img to the middle */
+    .pp-inner{
+        padding: 30px 15px;
+    }
+
+    .toggle-ball{
+        margin: 0;
+        margin-right: -36px;
+    }
+    
+}
+
+@media(max-width:575px){
+    .about-summary {
+        font-size: 20px;
+        width: 100%;
+    }
+    .about-text{
+        width: 100%;
+    }
+    .section-tile h2,
+    .header .nav-inner ul li a{
+        font-size: 33px;
+    }
+    .home-text h1{
+        font-size: 30px;
+    }
+    .home-text h2{
+        font-size:18.5px;
+    }
+    .pp-inner h3{
+        font-size: 20px;
+    }
+}
+
+@media(max-width:475px){
+    #cow-game{
+        width: calc(100%-35px);
+        transform: scale(0.95); 
+        transform-origin: 0 0;
+    }
+}
+@media(max-width:450px){
+    #cow-game{
+        transform: scale(0.9); 
+    }
+}
+@media(max-width:425px){
+    #cow-game{
+        transform: scale(0.85); 
+    }
+    #fortnite-app{
+        transform: scale(0.95); 
+        transform-origin: 0 0;
+    }
+}
+@media(max-width:400px){
+    #cow-game{
+        transform: scale(0.8); 
+    }
+    #fortnite-app{
+        transform: scale(0.9); 
+    }
+}
+@media(max-width:375px){
+    #cow-game{
+        transform: scale(0.74); 
+    }
+    #fortnite-app{
+        transform: scale(0.85); 
+    }
+}
+@media(max-width:350px){
+    #cow-game{
+        transform: scale(0.69); 
+    }
+    #fortnite-app{
+        transform: scale(0.75); 
+    }
+}
+@media(max-width:283px){
+    .toggle{
+        margin: 0;
+    }
+    .toggle-ball{
+        margin-right: -72px;
+    }
+
+}
