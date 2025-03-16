@@ -6,18 +6,18 @@
 
 /* Variables */
 :root{
-    --main-color: #ebeff09f;
-    --blue: #598bf8 ;
+    --main-color: black;
+    --blue: #000000 ;
     --blue-dark: #030303;
     --orange: #f5832d;
     --green-yellow: #Abe6ce;
-    --pink-light: #000000;
-    --cyan-light: #3b3b3b;
-    --change-color: #865ef3;
-    --toggle-ball: #465362;
+    --pink-light: #797979;
+    --cyan-light: #fff;
+    --change-color: #000000;
+    --toggle-ball: #353638;
     --white: rgb(7, 7, 7);
-    --white-alpha-40: rgba(255, 255, 255, 0.4);
-    --white-alpha-25: rgba(255, 255, 255, 0.25);
+    --white-alpha-40: black;
+    --white-alpha-25: rgba(255, 255, 255, 0.5);
     --backdrop-filter-blur: blur(5px);
 }
 
@@ -119,6 +119,8 @@ section.fade-out{
 
 .center{
     text-align: center;
+    align-items:center;
+    justify-content:center;
 }
 
 .main{
@@ -141,6 +143,7 @@ section.fade-out{
 .row{
     display:flex;
     flex-wrap:wrap;
+    justify-content: center;
 }
 
 .align-items-center{
@@ -349,7 +352,7 @@ button{
 .bg-circles .circle-4{
     height: 50px;
     width: 45px;
-    background-color: var(--orange);
+    background-color: var(--white);
     top: 69%;
     left: -30px;
     opacity: 0.6;
@@ -414,7 +417,7 @@ button{
 .page-loader div:nth-child(2){
     height:45px;
     width: 45px;
-    border-color: var(--blue);
+    border-color: var(--white);
     animation-duration: 2s;
     animation-duration: 2s;
 }
@@ -422,7 +425,7 @@ button{
 .page-loader div:nth-child(3){
     height:30px;
     width: 30px;
-    border-color: var(--orange);
+    border-color: var(--main-color);
 }
 
 /* Header */
@@ -473,7 +476,7 @@ button{
 
 .toggle-ball.active{
     /* #baa898  */
-    background-color: #d3dfe1 ;
+    background-color: #0eacf5 ;
     transform: translateX(-66px);
 }
 
@@ -866,6 +869,7 @@ button{
 .project-item{
     width: calc((100% / 3 ) - 30px);
     margin: 0 15px 30px;
+    padding-bottom: 20px;
     display: none;
 }
 
@@ -878,11 +882,12 @@ button{
     padding-bottom: 50px;
 }
 
-.project-item-thumbnail{
-    text-align: center;
+.project-description-title{
+    font-weight: 600;
 }
 
 .project-item-thumbnail{
+    text-align: center;
     padding: 10px;
     background-color: var(--white-alpha-25);
     border:1px solid var(--white-alpha-40);
@@ -890,7 +895,7 @@ button{
 }
 
 .project-item-thumbnail img{
-    height: 100%;
+    aspect-ratio: 1/1;
     border-radius: 10px;
 }
 
@@ -906,8 +911,8 @@ button{
 }
 
 .project-item-images img{
-    width: 40%;
-    margin: 0 0 20px 20px;
+    width: 45%;
+    margin: 0 0 10px 30px;
 }
 
 .project-item h3{
@@ -978,7 +983,7 @@ iframe {
     background-color: var(--white-alpha-25);
     padding: 30px;
     border-radius: 30px;
-    max-width: 900px;
+    max-width: 1200px;
     width: 100%;
     border:1px solid var(--white-alpha-40);
     backdrop-filter: var(--backdrop-filter-blur);
@@ -1006,7 +1011,7 @@ iframe {
     align-items: center;
     justify-content: center;
     position: absolute;
-    right: -40px;
+    right: 0px;
     top: -40px;
 }
 
