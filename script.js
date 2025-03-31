@@ -160,6 +160,40 @@ function projectItemDetails(projectItem){
     projectItem.querySelector(".project-item-details").innerHTML;
 }
 
+window.addEventListener("load", () => {
+    const hash = window.location.hash;
+    if (hash) {
+        const project = document.querySelector(hash);
+        if (project) {
+            // Find the parent tab of the project
+            const parentTab = project.closest(".tab-content");
+            if (parentTab) {
+                // Activate the correct tab
+                document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+                parentTab.classList.add("active");
+
+                // Activate the correct button
+                document.querySelectorAll(".tab-item").forEach(btn => {
+                    btn.classList.toggle("active", btn.getAttribute("data-target") === `#${parentTab.id}`);
+                });
+
+                // Scroll to the project
+                project.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    }
+});
+
+// Update URL when clicking "Project Details"
+document.querySelectorAll(".view-project-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        const project = e.target.closest(".project-item");
+        if (project) {
+            window.location.hash = project.id;
+        }
+    });
+});
+
 
 // // window.addEventListener('keydown', preventDefaultForScrollKeys, false);
 // window.addEventListener("keydown", function(e) {
