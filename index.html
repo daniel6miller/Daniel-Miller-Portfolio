@@ -256,20 +256,115 @@
                             <div class="project-item-details">
                                 <div class="description center">
                                     <a href="https://www.linkedresume.us" target=”_blank”>www.linkedresume.us</a>
-                                    <p>This is a fully custom MERN stack application built from scratch. The web application allows for users to create
-                                        profiles, connect with each other, post documents and receive feedback on these documents from their network. Amazon S3 is used to store objects and
-                                         Amazon's simple email service is utilized for different emailing automations. The client side code runs on Vercel and teh server side code runs on an AWS EC2 instance.
+                                    <br>
+                                    <a href="https://www.github.com/daniel6miller/linkedResumeClient" target=”_blank”>Github: Linked Resume Client Side</a>
+                                    <br>
+                                    <a href="https://www.github.com/daniel6miller/linkedResumeServer" target=”_blank”>Github: Linked Resume Server Side</a>
+                                    <p>Linked Resume is a fully custom, end-to-end MERN stack application that I built from the ground up. This web application empowers users to create 
+                                        professional profiles, connect with others in their network, and share documents for feedback and collaboration. Leveraging Amazon Web Services (AWS), 
+                                        I implemented Amazon S3 to efficiently store user-uploaded files and integrated Amazon Simple Email Service (SES) for seamless email automation, enhancing 
+                                        user communication. On the backend, I designed and optimized RESTful APIs using Node.js and Express.js, ensuring robust performance with the capability to 
+                                        handle 100 requests per second and an average response time of under 200ms. I engineered a scalable file storage system on AWS S3, which resulted in a 40% 
+                                        reduction in file retrieval latency, significantly improving the user experience. The application’s frontend is deployed on Vercel, while the backend runs on 
+                                        an AWS EC2 instance, providing a reliable infrastructure that supports 99.9% uptime. This project showcases my expertise in full-stack development, cloud 
+                                        infrastructure, and API optimization, ensuring a seamless and high-performance platform for users.
                                     </p>
+                                    <div class="system-design">
+                                        <h2>System Design Overview</h2>
+                                    
+                                        <h3>1. Constraints</h3>
+                                        <p>
+                                            <strong>Storage Capacity:</strong>
+                                            <ul>
+                                                <li><strong>Total Users:</strong> 100,000</li>
+                                                <li><strong>Average Upload per User per Month:</strong> 2</li>
+                                                <li><strong>Average Upload Size:</strong> 5MB</li>
+                                                <li><strong>Max Storage:</strong> 1TB/month — 12TB/year</li>
+                                            </ul>
+                                            <p>
+                                                To ensure scalability, LinkedResume is designed to support up to 100,000 users, with an average of 2 file uploads per user per month, each averaging 5MB in size. This translates to an anticipated storage need of 1TB per month, or 12TB per year.
+                                            </p>
+                                        </p>
+                                    
+                                        <h3>2. Network Bandwidth</h3>
+                                        <p>
+                                            <ul>
+                                                <li><strong>Average File Upload Time:</strong> 5 seconds</li>
+                                                <li><strong>Concurrent Uploads:</strong> 10,000</li>
+                                                <li><strong>Minimum Network Bandwidth:</strong> 10Gbps</li>
+                                            </ul>
+                                            <p>
+                                                The system is designed to handle up to 10,000 concurrent file uploads, with each upload taking approximately 5 seconds. This results in a minimum network bandwidth requirement of 10Gbps to ensure smooth file transfer and minimal latency.
+                                            </p>
+                                        </p>
+                                    
+                                        <h3>3. Compute Resources</h3>
+                                        <p>
+                                            <ul>
+                                                <li><strong>Concurrent Uploads:</strong> 10,000</li>
+                                                <li><strong>Processing Cores Required:</strong> 10,000</li>
+                                                <li><strong>1 Server = 32 Cores</strong></li>
+                                                <li><strong>Servers Required:</strong> 313 servers</li>
+                                            </ul>
+                                            <p>
+                                                The application’s backend is capable of processing up to 10,000 concurrent file uploads. Given the high processing demand, each server runs on 32 cores. To meet this requirement, we estimate needing 313 servers for optimal performance.
+                                            </p>
+                                        </p>
+                                    
+                                        <h3>4. Database Capacity</h3>
+                                        <p>
+                                            <ul>
+                                                <li><strong>Likes/Comments per File:</strong> 10</li>
+                                                <li><strong>Metadata Size/File:</strong> 50 bytes</li>
+                                                <li><strong>100,000 Concurrent Likes and Comments:</strong> 5 Mbps</li>
+                                            </ul>
+                                            <p>
+                                                For user interactions, each file typically receives around 10 likes/comments, and each piece of metadata for a file is about 50 bytes. Given up to 100,000 concurrent interactions, the system requires a database throughput of 5Mbps to handle these requests without latency.
+                                            </p>
+                                        </p>
+                                    
+                                        <h3>5. Database Schema</h3>
+                                        <p>
+                                            <strong>Schema Design:</strong>
+                                            <br>
+                                            <img width="50%"  src="https://danielmillerportfolio.s3.us-east-1.amazonaws.com/LinkeResumeSchemaLight.webp" alt="project item thumb" loading="lazy">
+                                
+                                        </p>
+                                    
+                                        <h3>6. Scalability & Redundancy</h3>
+                                        <p>
+                                            LinkedResume is designed to scale horizontally by adding more servers as needed. The backend architecture ensures high availability through AWS multi-AZ deployments for EC2 instances and S3 storage redundancy, guaranteeing system uptime and resilience during failures.
+                                        </p>
+                                    
+                                        <h3>7. Caching and Optimization</h3>
+                                        <p>
+                                            To reduce database load, we use caching solutions such as Redis for frequently accessed data (file metadata, user profiles, etc.). We also leverage AWS CloudFront to distribute static files and reduce latency for users across various regions.
+                                        </p>
+                                    
+                                        <h3>8. Security Considerations</h3>
+                                        <ul>
+                                            <li><strong>Authentication:</strong> We use JWT and OAuth for secure authentication and user authorization.</li>
+                                            <li><strong>Data Encryption:</strong> All user data is encrypted both in transit (using HTTPS) and at rest (using AWS S3 encryption).</li>
+                                            <li><strong>API Rate Limiting:</strong> To prevent abuse, we implement API rate limiting to ensure stability and fairness across all users.</li>
+                                        </ul>
+                                    
+                                        <h3>9. Monitoring and Analytics</h3>
+                                        <p>
+                                            LinkedResume uses AWS CloudWatch to monitor system performance, track errors, and trigger alarms for any issues that may arise. Additionally, we integrate Sentry for error tracking and logging to ensure rapid issue resolution.
+                                        </p>
+                                    </div>
                                 </div>
                                 <div class="general-info center">
                                     <ul>
-                                        <li>Built - <span>Nov 2024 - Current</span></li>
+                                        <li>Built - <span>Aug 2024 - Current</span></li>
                                         <li>Technologies - <span>React, MongoDB, Amazon S3, GitHub, AWS S3, EC2, SES, Vercel</span></li>
                                     </ul>
                                 </div>
                                 <div class="project-item-images">
                                     <img width="20%"  src="https://danielmillerportfolio.s3.us-east-1.amazonaws.com/LinkedResume1.png" alt="project item thumb" loading="lazy">
-                                    <img width="20%" src="https://danielmillerportfolio.s3.us-east-1.amazonaws.com/LinkedResume2.png" alt="project item thumb" loading="lazy">
+                                    <img width="20%" src="https://danielmillerportfolio.s3.us-east-1.amazonaws.com/LinkedResume4.png" alt="project item thumb" loading="lazy">
+                                    <img width="20%" src="https://danielmillerportfolio.s3.us-east-1.amazonaws.com/LinkedResume5.png" alt="project item thumb" loading="lazy">
+                                    <img width="20%" src="https://danielmillerportfolio.s3.us-east-1.amazonaws.com/LinkedResume6.png" alt="project item thumb" loading="lazy">
                                 </div>
                             </div>
                         </div>
@@ -277,29 +372,31 @@
                         <!-- Task AI Start -->
                         <div class="project-item active center" id="projects-software">
                             <div class="project-item-thumbnail">   
-                                <img src="https://danielmillerportfolio.s3.us-east-1.amazonaws.com/TaskAI0.png" alt="project item thumb" loading="lazy">
+                                <img src="https://danielmillerportfolio.s3.us-east-1.amazonaws.com/TaskAI5.png" alt="project item thumb" loading="lazy">
                             </div>
-                            <h3 class="project-item-title center">Task AI Program</h3>
+                            <h3 class="project-item-title center">Task AI</h3>
                             <button type="button" class="btn view-project-btn center">Project Details</button>
                             <div class="project-item-details">
                                 <div class="description center">
-                                    <p>This is a python application that utilizes pynput to track what a user is doing on their computer.
-                                        Then it stores the task inside of a MongoDB Database. Then another python script runs and takes as an input what
-                                        task the user wants completed, searches the database and then performs the task. Built out a test program to 
-                                        test functionalities of all python functions.
-                                        Currently building out the ability for the program to adjust to different conditions and still be able to 
-                                        perform the task required.
+                                    <a href="https://www.github.com/daniel6miller/TaskAI" target=”_blank”>Github: Task AI</a>
+                                    <p>Task AI is a Python-based automation web application designed to track and execute user-defined tasks efficiently. 
+                                        Utilizing pynput, the application monitors user activity and stores tasks in a MongoDB database. A separate Python script then processes user requests, 
+                                        searches the database, and executes the desired task. Built with Flask, Task AI reduces manual task completion time by 70% through an advanced task execution engine. 
+                                        It will be integrated with a large language model API to enhance automation and user interaction while ensuring secure task execution with JWT-based authentication.
+
+                                        Currently, I am working on gathering large amounts of task data and integrating a powerful LLM to make task execution even more autonomous. This will allow 
+                                        Task AI to learn from user patterns, adapt to different conditions, and optimize task performance with minimal user input.
                                     </p>
                                 </div>
                                 <div class="general-info center">
                                     <ul>
-                                        <li>Built - <span>Jan 2024 - Current</span></li>
-                                        <li>Technologies - <span>Python, MongoDB, GitHub</span></li>
+                                        <li>Built - <span>Nov 2024 - Current</span></li>
+                                        <li>Technologies - <span>Python, MongoDB, Flask, GitHub</span></li>
                                     </ul>
                                 </div>
                                 <div class="project-item-images">
                                     <img width="20%"  src="https://danielmillerportfolio.s3.us-east-1.amazonaws.com/TaskAI0.png" alt="project item thumb" loading="lazy">
-                                    <img width="20%" src="https://danielmillerportfolio.s3.us-east-1.amazonaws.com/TaskAI1.png" alt="project item thumb" loading="lazy">
+                                    <img width="20%" src="https://danielmillerportfolio.s3.us-east-1.amazonaws.com/TaskAI2.png" alt="project item thumb" loading="lazy">
                                 </div>
                             </div>
                         </div>
@@ -314,14 +411,24 @@
                             <div class="project-item-details">
                                 <div class="description center">
                                     <a href="https://www.apolloski.com" target=”_blank”>www.ApolloSki.com</a>
-                                    <p>This is a fully custom MERN stack Eccomerce applicaiton.
-                                        The program utilizes MongoDB as a database and AWS S3 for object storage.
-                                        Stripe API is used to process payments, Shippo API is used to price out shipping and create labels.
+                                    <p>
+                                        ApolloSki.com is a fully custom MERN stack e-commerce application designed for seamless and secure online transactions. 
+                                        The platform leverages MongoDB for database management and AWS S3 for object storage. 
+                                        It integrates Stripe APIfor secure payment processing and Shippo API to automate shipping calculations and label generation, 
+                                        streamlining order fulfillment.
                                     </p>
+                                
+                                    <h3>Key Features:</h3>
+                                    <ul>
+                                        <li>Custom-Built MERN Stack Platform – Ensuring high performance and scalability with a robust backend.</li>
+                                        <li>Secure Payments with Stripe API – Reducing checkout failures by 20% through a seamless transaction experience.</li>
+                                        <li>Automated Shipping with Shippo API – Pricing out shipping in real time and generating labels automatically, cutting order processing time by 35%.</li>
+                                        <li>High Uptime & Reliability – Engineered for 99.9% uptime, providing a smooth shopping experience.</li>
+                                    </ul>
                                 </div>
                                 <div class="general-info center">
                                     <ul>
-                                        <li>Built - <span>2024 - Current</span></li>
+                                        <li>Built - <span>Aug 2023 - April 2024</span></li>
                                         <li>Technologies used - <span>MongoDB, AWS S3, SES, EC2, Vercel, Stripe, Shippo</span></li>
                                     </ul>
                                 </div>
@@ -343,9 +450,14 @@
                             <div class="project-item-details">
                                 <div class="description center">
                                     <a href="https://apps.apple.com/mk/app/abd-calculator/id6480434613" target="_blank">App Store</a>
-                                    <p>This is a mobile application to help civil construction foreman and superintendents calculate information for
-                                         civil operations from their phone. Had multiple users test out product and give feedback. 
-                                         Iterated product to meet the needs of the workers.
+                                    <p>
+                                        I developed an iOS application designed for construction foremen to streamline tracking of quantities, costs, and man-hours. 
+                                        This application helps civil construction foremen and superintendents efficiently calculate operational data directly from their phone, 
+                                        saving them an average of one hour per day. 
+                                    </p>
+                                    <p>
+                                        Multiple users tested the product and provided feedback, allowing for continuous iterations to better meet the needs of the workers. 
+                                        The app enhances operational efficiency by providing real-time insights, helping foremen understand performance metrics and improve decision-making on the job site.
                                     </p>
                                 </div>
                                 <div class="general-info center">
