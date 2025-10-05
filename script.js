@@ -1,203 +1,139 @@
-window.addEventListener("load", ()=>{
-    document.querySelector(".main").classList.remove("hidden");
-    document.querySelector(".home-section").classList.add("active");
-    // Page Loader
-    document.querySelector(".page-loader").classList.add("fade-out");
-    // After a while the circle loading effect will stop working
-    setTimeout(() => {
-        document.querySelector(".page-loader").style.display = "none";
-    },1000);
+// script.js
+
+// On load: reveal main; remove loader
+window.addEventListener("load", () => {
+  document.querySelector(".main").classList.remove("hidden");
+  document.querySelector(".home-section").classList.add("active");
+  const loader = document.querySelector(".page-loader");
+  loader.classList.add("fade-out");
+  setTimeout(() => { loader.style.display = "none"; }, 300);
 });
 
-//toggle-ball
+// ---- Theme toggle ----
 const ball = document.querySelector(".toggle-ball");
-const items = document.querySelectorAll(":root,toggle");
-ball.addEventListener("click", () => {
-    items.forEach((item) => {
-        item.classList.toggle("active");
-    });
-    // apply for the ball too
-    ball.classList.toggle("active");
-    });
+ball?.addEventListener("click", () => {
+  document.documentElement.classList.toggle("theme-dark"); // toggle on <html>
+  ball.classList.toggle("active");
+});
 
-// Toggle navbar
+// ---- Nav toggle ----
 const navToggler = document.querySelector(".nav-toggler");
-navToggler.addEventListener("click", ()=>{
-    hideSection();
-    toggleNavbar();
-    document.body.classList.toggle("hide-scrolling");
+function toggleNavbar(){ document.querySelector(".header").classList.toggle("active"); }
+function hideSection(){ document.querySelector("section.active")?.classList.toggle("fade-out"); }
+
+navToggler?.addEventListener("click", ()=>{
+  hideSection();
+  toggleNavbar();
+  document.body.classList.toggle("hide-scrolling");
 });
 
-function hideSection(){
-    document.querySelector("section.active").classList.toggle("fade-out");
-}
+// ---- Section routing (links with .link-item and a data-target="#id") ----
+document.addEventListener("click", (e) => {
+  const el = e.target;
+  if (!(el instanceof Element)) return;
 
-//activate them
-function toggleNavbar(){
-    document.querySelector(".header").classList.toggle("active");
-}
+  if (el.classList.contains("link-item")) {
+    const target = el.getAttribute("href") || el.getAttribute("data-target") || el.hash;
+    if (!target) return;
 
-// Active Section
-// why do we use hash in here?
-document.addEventListener("click", (e)=>{
-    if(e.target.classList.contains("link-item") && e.target.hash !== ""){
-        // activate the overlay to prevent multiple clicks
-        document.querySelector(".overlay").classList.add("active");
-        navToggler.classList.add("hide");
-        if(e.target.classList.contains("nav-item")){
-            toggleNavbar();
-        }
-        else{
-            hideSection;
-            document.body.classList.add("hide-scrolling");
-        }
-        setTimeout(() => {
-            document.querySelector("section.active").classList.remove("active","fade-out");
-            document.querySelector(e.target.hash).classList.add("active");
-            window.scrollTo(0,0);
-            document.body.classList.remove("hide-scrolling");
-            navToggler.classList.remove("hide");
-            document.querySelector(".overlay").classList.remove("active");
-        },500);
-    }
+    e.preventDefault();
+    document.querySelector(".overlay").classList.add("active");
+    navToggler?.classList.add("hide");
+
+    if (el.classList.contains("nav-item")) toggleNavbar();
+    else hideSection();
+
+    document.body.classList.add("hide-scrolling");
+
+    setTimeout(() => {
+      const current = document.querySelector("section.active");
+      current?.classList.remove("active", "fade-out");
+      document.querySelector(target)?.classList.add("active");
+      window.scrollTo({ top: 0, behavior: "instant" });
+      document.body.classList.remove("hide-scrolling");
+      navToggler?.classList.remove("hide");
+      document.querySelector(".overlay").classList.remove("active");
+    }, 300);
+  }
 });
 
-// About Tabs
+// ---- Project tabs ----
+const tabsContainer = document.querySelector(".project-tabs");
+const projectSection = document.querySelector(".projects-section");
 
-const tabsContainer = document.querySelector(".project-tabs"),
-projectSection = document.querySelector(".projects-section");
+tabsContainer?.addEventListener("click", (e) => {
+  const el = e.target;
+  if (!(el instanceof Element)) return;
 
+  if (el.classList.contains("tab-item") && !el.classList.contains("active")) {
+    tabsContainer.querySelector(".active")?.classList.remove("active");
+    el.classList.add("active");
 
-tabsContainer.addEventListener("click", (e) => {
-    // if we choose the one is not active
-    if(e.target.classList.contains("tab-item") && !e.target.classList.contains("active")){
-        // we will pick the current active one and remove the active status of it
-        tabsContainer.querySelector(".active").classList.remove("active");
-        // add active status to the option that we pick
-        e.target.classList.add("active");
-        const target = e.target.getAttribute("data-target");
-        console.log(target);
-        projectSection.querySelector(".tab-content.active").classList.remove("active");
-        const projectHide = projectSection.querySelectorAll(".project-item.active");
-        for (let i = 0; i < projectHide.length; i++) {
-            projectHide[i].classList.remove("active");
-          }
-        const projectShow = projectSection.querySelectorAll(target);
-        for (let i = 0; i < projectShow.length; i++) {
-            projectShow[i].classList.add("active");
-          }
-    }
+    const targetSel = el.getAttribute("data-target");
+    if (!targetSel) return;
+
+    projectSection.querySelector(".tab-content.active")?.classList.remove("active");
+    projectSection.querySelector(targetSel)?.classList.add("active");
+
+    // Show/hide project items inside that tab
+    projectSection.querySelectorAll(".project-item").forEach((it) => it.classList.remove("active"));
+    projectSection.querySelectorAll(`${targetSel} .project-item`).forEach((it) => it.classList.add("active"));
+  }
 });
 
-// Project Item details popup
-document.addEventListener("click", (e)=> {
-    if(e.target.classList.contains("view-project-btn")){
-        toggleProjectPopup();
-        // when the detail about the project is pop up, the scroll will be 
-        // automatically scrolled to the location (0,0) which is the top page
-        document.querySelector(".project-popup").scrollTo(0,0);
-        projectItemDetails(e.target.parentElement);
-    }
-})
+// ---- Popup (details/game) ----
+const popup = document.querySelector(".project-popup");
+const ppInner = popup?.querySelector(".pp-inner");
+const ppClose = popup?.querySelector(".pp-close");
+const ppHeaderTitle = popup?.querySelector(".pp-header h3");
+const ppBody = popup?.querySelector(".pp-body");
 
-// Project Item details popup
-document.addEventListener("click", (e)=> {
-    if(e.target.classList.contains("view-game-btn")){
-        toggleProjectPopup();
-        // when the detail about the project is pop up, the scroll will be 
-        // automatically scrolled to the location (0,0) which is the top page
-        document.querySelector(".project-popup").scrollTo(0,0);
-        projectGameDetails(e.target.parentElement);
-    }
-})
-
-function toggleProjectPopup(){
-    document.querySelector(".project-popup").classList.toggle("open");
-    // we want to hide the scroll when the info of the project pop up
-    document.body.classList.toggle("hide-scrolling");
-    document.querySelector(".main").classList.toggle("fade-out");
-}
-
-// now we want to make the close button to work
-// we call the function because right now the main screen is the popup => close the current main screen
-document.querySelector(".pp-close").addEventListener("click", toggleProjectPopup);
-
-//hide popup when clicking outside of it
-// when we hit the screen randomly, we want to hide it
-document.addEventListener("click", (e)=>{
-    if(e.target.classList.contains("pp-inner")){
-        toggleProjectPopup();
-    }
-})
-
-document.addEventListener("click", (e)=>{
-    if(e.target.classList.contains("nav-inner")){
-        document.querySelector(".home-text").classList.add("active");
-        // we want to hide the scroll when the info of the project pop up
-        document.body.classList.toggle("hide-scrolling");
-        document.querySelector(".main").classList.toggle("fade-out");
-
-    }
-})
-
-
-
-
-// how can we locate the right info when we want to open a project
-// we locate them by the image
-function projectGameDetails(projectItem){
-    document.querySelector(".pp-header h3").innerHTML = "";
-
-    document.querySelector(".pp-body").innerHTML=
-    projectItem.querySelector(".project-item-game").innerHTML;
+function toggleProjectPopup() {
+  popup.classList.toggle("open");
+  document.body.classList.toggle("hide-scrolling");
+  document.querySelector(".main").classList.toggle("fade-out");
 }
 
 function projectItemDetails(projectItem){
-    document.querySelector(".pp-header h3").innerHTML = 
-    projectItem.querySelector(".project-item-title").innerHTML;
-
-    document.querySelector(".pp-body").innerHTML=
-    projectItem.querySelector(".project-item-details").innerHTML;
+  ppHeaderTitle.textContent = projectItem.querySelector(".project-item-title")?.textContent || "";
+  ppBody.innerHTML = projectItem.querySelector(".project-item-details")?.innerHTML || "";
+  secureExternalLinks(ppBody);
 }
 
-// window.addEventListener("load", () => {
-//     const hash = window.location.hash;
-//     if (hash) {
-//         const project = document.querySelector(hash);
-//         if (project) {
-//             // Find the parent tab of the project
-//             const parentTab = project.closest(".tab-content");
-//             if (parentTab) {
-//                 // Activate the correct tab
-//                 document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
-//                 parentTab.classList.add("active");
+function projectGameDetails(projectItem){
+  ppHeaderTitle.textContent = "Preview";
+  ppBody.innerHTML = projectItem.querySelector(".project-item-game")?.innerHTML || "";
+  secureExternalLinks(ppBody);
+}
 
-//                 // Activate the correct button
-//                 document.querySelectorAll(".tab-item").forEach(btn => {
-//                     btn.classList.toggle("active", btn.getAttribute("data-target") === `#${parentTab.id}`);
-//                 });
+// Secure _blank links inside injected HTML
+function secureExternalLinks(scope){
+  scope?.querySelectorAll('a[target="_blank"]').forEach(a => {
+    a.setAttribute("rel", "noopener noreferrer");
+  });
+}
 
-//                 // Scroll to the project
-//                 project.scrollIntoView({ behavior: "smooth" });
-//             }
-//         }
-//     }
-// });
+// Open/close popup
+document.addEventListener("click", (e) => {
+  const el = e.target;
+  if (!(el instanceof Element)) return;
 
-// // Update URL when clicking "Project Details"
-// document.querySelectorAll(".view-project-btn").forEach(btn => {
-//     btn.addEventListener("click", (e) => {
-//         const project = e.target.closest(".project-item");
-//         if (project) {
-//             window.location.hash = project.id;
-//         }
-//     });
-// });
+  if (el.classList.contains("view-project-btn")) {
+    toggleProjectPopup();
+    popup.scrollTo(0,0);
+    projectItemDetails(el.closest(".project-item"));
+  }
+  if (el.classList.contains("view-game-btn")) {
+    toggleProjectPopup();
+    popup.scrollTo(0,0);
+    projectGameDetails(el.closest(".project-item"));
+  }
+  if (el.classList.contains("pp-inner")) toggleProjectPopup();
+});
 
+ppClose?.addEventListener("click", toggleProjectPopup);
 
-// // window.addEventListener('keydown', preventDefaultForScrollKeys, false);
-// window.addEventListener("keydown", function(e) {
-//     if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
-//         e.preventDefault();
-//     }
-// }, false);
+// Escape key closes popup
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && popup?.classList.contains("open")) toggleProjectPopup();
+});
