@@ -370,30 +370,252 @@ html.theme-dark .toggle-ball { transform: translateX(46px); background: #fff; }
 
 .project-description-title { font-weight: 700; }
 
-/* Popup (project details) */
-.project-popup { position: fixed; inset: 0; z-index: 50; visibility: hidden; opacity: 0; transition: opacity .2s ease, visibility .2s steps(1, end); }
-.project-popup.open { visibility: visible; opacity: 1; }
-.pp-inner {
-  min-height: 100vh; display: grid; place-items: center; padding: 24px;
-  background: color-mix(in srgb, var(--bg) 75%, transparent);
+/* Popup */
+.project-popup {
+  position: fixed; inset: 0; z-index: 50;
+  visibility: hidden; opacity: 0;
+  transition: opacity .2s ease, visibility .2s steps(1, end);
 }
+.project-popup.open { visibility: visible; opacity: 1; }
+
+/* Dim background */
+.pp-inner {
+  min-height: 100vh;
+  display: grid; place-items: center;
+  padding: 24px;
+  background: rgba(0,0,0,.75);
+}
+
+/* Modal shell */
 .pp-content {
   width: min(1040px, 96vw);
-  background: var(--card); border: 1px solid var(--card-line); border-radius: var(--radius-lg);
-  box-shadow: var(--shadow); padding: clamp(16px, 3vw, 32px);
-  transform: scale(.98); opacity: 0; transition: transform .2s ease, opacity .2s ease;
+  max-height: 90vh;                          /* contain to viewport */
+  display: flex; flex-direction: column;     /* header + body */
+  background: var(--card);
+  border: 1px solid var(--card-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  transform: scale(.98); opacity: 0;
+  transition: transform .2s ease, opacity .2s ease;
+  overflow: hidden;                           /* body scroll inside */
 }
 .project-popup.open .pp-content { transform: scale(1); opacity: 1; }
-.pp-header { position: relative; }
-.pp-header .btn {
-  position: absolute; right: 0; top: -44px; width: 40px; height: 40px; display: grid; place-items: center;
-  border-radius: 50%; background: var(--card); border: 1px solid var(--line);
+
+/* Header */
+.pp-header {
+  position: sticky; top: 0; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  padding: clamp(16px, 3vw, 24px);
+  border-bottom: 1px solid var(--card-line);
+  background: var(--card);
 }
-.pp-header h3 { margin: 8px 0 16px; font-size: 22px; }
-.pp-body .description { font-size: 16px; }
-.pp-body .general-info { margin-top: 16px; }
-.pp-body .general-info li { list-style: none; margin-bottom: 8px; font-weight: 600; }
-.pp-body .general-info li span { font-weight: 400; color: var(--muted); }
+.pp-header h3 { margin: 0; font-size: 22px; line-height: 1.2; }
+
+/* Close button (visible “×”) */
+.pp-close {
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  font-size: 22px; font-weight: 800; line-height: 1;
+  color: var(--fg);
+  cursor: pointer;
+}
+.pp-close:hover { background: var(--bg); }
+
+/* Scrollable body */
+.pp-body { flex: 1 1 auto; }
+.pp-scroll {
+  height: 100%;
+  overflow: auto;                     /* real scroll lives here */
+  -webkit-overflow-scrolling: touch;
+  padding: clamp(16px, 3vw, 28px);
+}
+
+/* Content inside modal */
+/* ---------- Modal details polish ---------- */
+
+/* 1) Pill buttons: subtle hover/focus */
+.btn.btn-pill{
+  border-radius: 999px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--fg);
+  font-weight: 700;
+  display: inline-block;
+  transition: background .2s ease, color .2s ease, border-color .2s ease, transform .1s ease;
+}
+.btn.btn-pill:hover{
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+  transform: translateY(-1px);
+}
+.btn.btn-pill:active{
+  transform: translateY(0);
+}
+.btn.btn-pill:focus-visible{
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+
+/* 2) Summary: make it the lead paragraph (black text) */
+.proj-summary{
+  color: var(--fg);               /* was muted */
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+
+/* Links row spacing */
+.proj-links{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 8px 0 16px;
+}
+
+/* 3) Meta to match highlights size + cleaner layout */
+.proj-meta{
+  display: grid;
+  gap: 6px;
+  margin: 6px 0 16px;
+  padding: 0;
+  list-style: none;
+  font-size: 16px;                /* match highlights */
+  line-height: 1.5;
+}
+
+.proj-meta li{
+  display: flex;
+  gap: 6px;
+}
+.proj-meta strong{
+  color: var(--fg);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Highlights: modern bullets */
+.proj-highlights{
+  margin: 0 0 20px;
+  padding-left: 1.1em;            /* tighter than default */
+  font-size: 16px;
+}
+.proj-highlights li{
+  margin: 6px 0;
+  line-height: 1.55;
+}
+.proj-highlights li::marker{
+  content: "• ";
+}
+
+/* Gallery: neat grid + hover lift */
+.proj-gallery{
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(1, 1fr);
+  margin: 14px 0 20px;
+}
+@media (min-width: 900px){
+  .proj-gallery{ grid-template-columns: repeat(2, 1fr); }
+}
+.proj-gallery img{
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--card-line);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.proj-gallery img:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.15);
+}
+
+/* Section header inside details */
+.proj-description h4{
+  margin: 12px 0 8px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+.proj-description p{
+  margin: 0 0 10px;
+  color: var(--fg);
+  line-height: 1.6;
+}
+
+/* Optional: soft separators to chunk content */
+.pp-body > * + *{
+  border-top: 1px solid var(--card-line);
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+
+/* Overlay */
+.project-popup {
+  position: fixed; inset: 0; z-index: 1000;
+  visibility: hidden; opacity: 0;
+  transition: opacity .2s ease, visibility .2s steps(1,end);
+}
+.project-popup.open { visibility: visible; opacity: 1; }
+
+/* Dim layer */
+.pp-inner {
+  position: fixed; inset: 0;           /* full screen */
+  display: grid; place-items: center;
+  padding: 24px;
+  background: rgba(0,0,0,.75);
+}
+
+/* Modal panel is the scroll container */
+.pp-content {
+  width: min(1040px, 96vw);
+  max-height: 90vh;                    /* containment */
+  overflow: auto;                      /* ← scroll lives here */
+  background: var(--card);
+  border: 1px solid var(--card-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+
+  /* Avoid transform-based animations (can break nested scroll) */
+  transform: none !important;
+}
+
+/* Sticky header works because its nearest scrolling ancestor is .pp-content */
+.pp-header {
+  position: sticky; top: 0; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  padding: clamp(16px, 3vw, 24px);
+  border-bottom: 1px solid var(--card-line);
+  background: var(--card);
+}
+
+/* Content padding */
+.pp-body { padding: clamp(16px, 3vw, 28px); }
+
+/* Close button */
+.pp-close {
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  font-size: 22px; font-weight: 800; line-height: 1;
+  color: var(--fg);
+  cursor: pointer;
+}
+.pp-close:hover { background: var(--bg); }
+
+/* While modal open, lock page scroll */
+body.hide-scrolling { overflow: hidden; }
+
+
 
 /* System design box inside details */
 .system-design .description,

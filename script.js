@@ -57,7 +57,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// ---- Project tabs ----
+// ---- Project tabs (unchanged) ----
 const tabsContainer = document.querySelector(".project-tabs");
 const projectSection = document.querySelector(".projects-section");
 
@@ -75,65 +75,65 @@ tabsContainer?.addEventListener("click", (e) => {
     projectSection.querySelector(".tab-content.active")?.classList.remove("active");
     projectSection.querySelector(targetSel)?.classList.add("active");
 
-    // Show/hide project items inside that tab
     projectSection.querySelectorAll(".project-item").forEach((it) => it.classList.remove("active"));
     projectSection.querySelectorAll(`${targetSel} .project-item`).forEach((it) => it.classList.add("active"));
   }
 });
 
-// ---- Popup (details/game) ----
-const popup = document.querySelector(".project-popup");
-const ppInner = popup?.querySelector(".pp-inner");
-const ppClose = popup?.querySelector(".pp-close");
-const ppHeaderTitle = popup?.querySelector(".pp-header h3");
-const ppBody = popup?.querySelector(".pp-body");
+(() => {
+  const body = document.body;
+  const main = document.querySelector(".main");
+  const popup = document.getElementById("projectPopup");
+  if (!popup) return;
 
-function toggleProjectPopup() {
-  popup.classList.toggle("open");
-  document.body.classList.toggle("hide-scrolling");
-  document.querySelector(".main").classList.toggle("fade-out");
-}
+  const ppTitle = popup.querySelector("#pp-title");
+  const ppBody  = popup.querySelector(".pp-body");  // <— inject here
+  const ppCloseBtn = popup.querySelector(".pp-close");
 
-function projectItemDetails(projectItem){
-  ppHeaderTitle.textContent = projectItem.querySelector(".project-item-title")?.textContent || "";
-  ppBody.innerHTML = projectItem.querySelector(".project-item-details")?.innerHTML || "";
-  secureExternalLinks(ppBody);
-}
+  function openPopup({ title, detailsHTML }) {
+    ppTitle.textContent = title || "Project";
+    ppBody.innerHTML = detailsHTML || "";
 
-function projectGameDetails(projectItem){
-  ppHeaderTitle.textContent = "Preview";
-  ppBody.innerHTML = projectItem.querySelector(".project-item-game")?.innerHTML || "";
-  secureExternalLinks(ppBody);
-}
+    popup.classList.add("open");
+    popup.setAttribute("aria-hidden", "false");
+    body.classList.add("hide-scrolling");
+    main && main.classList.add("fade-out");
+    ppBody.scrollTop = 0;
 
-// Secure _blank links inside injected HTML
-function secureExternalLinks(scope){
-  scope?.querySelectorAll('a[target="_blank"]').forEach(a => {
-    a.setAttribute("rel", "noopener noreferrer");
+    // harden external links
+    ppBody.querySelectorAll('a[target="_blank"]').forEach(a => {
+      a.setAttribute("rel", "noopener noreferrer");
+    });
+  }
+
+  function closePopup() {
+    popup.classList.remove("open");
+    popup.setAttribute("aria-hidden", "true");
+    body.classList.remove("hide-scrolling");
+    main && main.classList.remove("fade-out");
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".view-project-btn");
+    if (!btn) return;
+
+    const card = btn.closest(".project-item");
+    if (!card) return;
+
+    const title   = card.querySelector(".project-item-title")?.textContent?.trim() || "Project";
+    // grab the *content* (we don’t need inner .pp-body/.pp-scroll anymore)
+    const details = card.querySelector(".project-item-details");
+    openPopup({ title, detailsHTML: details?.innerHTML || "" });
   });
-}
 
-// Open/close popup
-document.addEventListener("click", (e) => {
-  const el = e.target;
-  if (!(el instanceof Element)) return;
+  ppCloseBtn?.addEventListener("click", closePopup);
 
-  if (el.classList.contains("view-project-btn")) {
-    toggleProjectPopup();
-    popup.scrollTo(0,0);
-    projectItemDetails(el.closest(".project-item"));
-  }
-  if (el.classList.contains("view-game-btn")) {
-    toggleProjectPopup();
-    popup.scrollTo(0,0);
-    projectGameDetails(el.closest(".project-item"));
-  }
-  if (el.classList.contains("pp-inner")) toggleProjectPopup();
-});
+  popup.addEventListener("click", (e) => {
+    if (e.target === popup || e.target.hasAttribute("data-pp-overlay")) closePopup();
+  });
 
-ppClose?.addEventListener("click", toggleProjectPopup);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && popup.classList.contains("open")) closePopup();
+  });
+})();
 
-// Escape key closes popup
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && popup?.classList.contains("open")) toggleProjectPopup();
-});
